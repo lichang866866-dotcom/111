@@ -1,0 +1,56 @@
+{
+  "name": "english-tutor",
+  "version": "1.0.0",
+  "description": "Windows desktop English learning app with AI analysis",
+  "main": "./dist-electron/main.js",
+  "scripts": {
+    "dev": "npm run build:electron && vite",
+    "build": "tsc && vite build && npm run build:electron",
+    "build:electron": "tsc -p electron/tsconfig.json && vite build --config vite.preload.config.ts",
+    "preview": "vite preview",
+    "electron": "wait-on http://localhost:5173 && electron .",
+    "electron:dev": "concurrently \"npm run dev\" \"npm run electron\"",
+    "dist": "npm run build && electron-builder",
+    "dist:win": "npm run build && electron-builder --win"
+  },
+  "dependencies": {
+    "lucide-react": "^0.344.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.0",
+    "sql.js": "^1.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.39",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^8.2.2",
+    "electron": "^29.4.6",
+    "electron-builder": "^24.13.3",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.3",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.english-tutor.app",
+    "productName": "English Tutor",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist-electron",
+      "dist",
+      "node_modules/sql.js/dist/sql-wasm.wasm"
+    ],
+    "extraResources": [
+      {
+        "from": "node_modules/sql.js/dist/sql-wasm.wasm",
+        "to": "sql-wasm.wasm"
+      }
+    ],
+    "win": {
+      "target": "nsis"
+    }
+  }
+}
